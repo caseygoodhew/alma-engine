@@ -1,8 +1,8 @@
 const chalk = require('chalk');
 const argv = require('yargs').argv;
 const autotrader = require('./autotrader');
-const fileLoader = require('../good-grater').loaders.file;
-const urlLoader = require('../good-grater').loaders.url;
+const fileLoader = require('../good-grater').loader.file;
+const urlLoader = require('../good-grater').loader.url;
 const _grater = require('../good-grater');
 
 const config = {};
@@ -19,13 +19,15 @@ if (argv.source === 'file') {
     config.start = autotrader.url;
 }
 
-const grater = _grater({
-    resourceLoader: config.loader
-});
+_grater(config.loader, grater => {
+    console.log(chalk.green(`Starting with ${config.start}`))
 
-
-
-
-grater(autotrader.spatula, config.start, result => {
-    console.log(chalk.cyanBright(JSON.stringify(result, undefined, 2)));
+    grater({
+        data: config.start,
+        cast: 'text',
+        follow: true,
+        then: autotrader.spatula
+    }, result => {
+        console.log(chalk.cyanBright(JSON.stringify(result, undefined, 2)));
+    });
 });
