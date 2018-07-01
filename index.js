@@ -24,8 +24,6 @@ _grater(config.loader, grater => {
 
     grater({
         data: config.start,
-        cast: 'text',
-        follow: true,
         then: autotrader.spatula
     }, result => {
         console.log(chalk.cyanBright(JSON.stringify(result, undefined, 2)));
